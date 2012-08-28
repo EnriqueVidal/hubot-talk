@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Hubot</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/theme/default.css">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <script>
+      // If the query includes 'print-pdf' we'll use the PDF print sheet
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Used to fade in a background when a specific slide state is reached -->
+      <div class="state-background"></div>
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Hubot</h1>
+          <h3>Un bot para chat programado por github</h3>
+          <img width="300" height="300" src="http://octodex.github.com/images/baracktocat.jpg" alt="hubot" />
+        </section>
+
+        <section>
+          <section>
+            <h2>Alguna vez sentiste que...</h2>
+            <ul>
+              <li>¿El chat en el trabajo era aburrido?</li>
+              <li>¿Que estabas siendo más productivo de lo necesario?</li>
+              <li>¿Que es muy molesto buscar en google una imagen que describa lo que piensas acerca de un comentario?</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Si la respuesta a alguna de estás preguntas es sí...</h2>
+            <p>No temas hubot está aquí.</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>En serio... ¿Qué es Hubot?</h2>
+            <p>
+              Hubot es un bot para diferentes sistemas de mensajería que puede hacer tú trabajo más fácil o tu conversación más divertida.
+            </p>
+          </section>
+
+          <section>
+            <h2>¿Porqué es relevante para un grupo de Javascript?</h2>
+            <ol>
+              <li>Hubot está desarrollado en node.js.</li>
+              <li>Hubot es extensible.</li>
+            </ol>
+            <p>
+              <i><small>- Y hoy hablaremos de ambas cosas.</small></i>
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>¿Funcionará para mi?</h2>
+            <p>Hoy en día Hubot se puede conetar a:</p>
+            <ul>
+              <li>Flowdock</li>
+              <li>HipChat</li>
+              <li>IRC</li>
+              <li>Partychat</li>
+              <li>Talker</li>
+              <li>Tetalab</li>
+              <li>Twilio</li>
+              <li>Twitter</li>
+              <li>XMPP</li>
+              <li>Gtalk</li>
+              <li>Yammer</li>
+              <li>Skype</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Pero no uso ninguno de esos servicios y necesito un amigo...</h2>
+            <p>No te preocupes, Hubot puede correr en modo local desde tu shell.</p>
+            <pre><code>
+$ cd hubot
+$ . bin/hubot
+Hubot> hubot echo "I love user"
+Hubot> "I love user"
+          </code></pre>
+          </section>
+
+          <section>
+            <h2>Me convensiste ¿qué necesito para instalar Hubot?</h2>
+            <ol>
+              <li><code>node.js</code></li>
+              <li><code>npm</code></li>
+              <li><code>build-essentials</code>.</li>
+              <li><code>coreutils</code>.</li>
+              <li>No temerle a lo desconocido.</li>
+            </ol>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Instalación</h2>
+            <p>Asumiendo que tienes todo lo necesario:</p>
+            <pre><code>
+$ git clone git://github.com/github/hubot.git && cd hubot
+$ npm install
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Deployment</h2>
+            <p>Hacer deployment es igual de sencillo que instalar, especialmente en heroku</p>
+            <p><i><small>- Más información <a href="https://github.com/github/hubot/wiki/Deploying-Hubot-onto-Heroku">aquí</a>.</small></i></p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Extendiendo Hubot</h2>
+            <p>Hubot sigue el principio de UNIX</p>
+            <i><small>- pequeños programas que hacen una sola cosa</small></i>
+          </section>
+
+          <section>
+            <h2>Un script de Hubot es...</h2>
+            <p>Un script escrito en javascript o coffeescript, y está es su forma más simple.</p>
+            <pre><code>
+module.exports = (robot)->
+  robot.respond /tijuana\.js/i, (message)->
+    message.send "It's the happiest place on earth!"
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Resultado</h2>
+            <pre><code>
+$ cd hubot
+$ . bin/hubot
+Hubot> hubot tijuana.js
+Hubot> It's the happiest place on earth!
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Más que simples mensajes</h2>
+            <pre><code>
+module.exports = (robot)->
+  robot.respond /(?:translate) ( me )? (.*)/i, (message)->
+
+    message.http('http://translate.google.com/translate_a/t')
+      .query(
+        sl:     'auto',
+        target: 'en'
+      )
+      .header('User-Agent', 'Hubot MOFO!')
+      .get() (error, response, body)->
+        message.send body
+
+            </code></pre>
+            <i><small>- El objeto message viene cargado con un cliente HTTP</small></i>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Hacer que Hubot escuche</h2>
+            <p>Hubot es bueno respondiendo lo que le pedimos, pero también puede actuar sin petición alguna:</p>
+            <pre><code>
+module.exports = (robot)->
+  robot.hear /creo que (.+)$/i, (message)->
+    message.send "YEAAAAHHHHH!"
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Resultado</h2>
+            <pre><code>
+$ cd hubot
+$ . bin/hubot
+Hubot> creo que este arroz ya se cocio
+Hubot> YEAAAAHHHHH!
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>The bleeding edge</h2>
+            <p>Quiero los scripts más nuevos.</p>
+            <pre><code>
+  "dependencies": {
+    "hubot-scripts": "git://github.com/github/hubot-scripts.git"
+  }
+            </code></pre>
+            <small><i>- package.json de hubot</i></small>
+          </section>
+
+          <section>
+            <h2>Quiero publicar mi script</h2>
+            <ol>
+              <li>Hacer fork a <a href="http://github.com/github/hubot-scripts.git">hubot-scripts</a></li>
+              <li>Hacer clone de tú fork y agregar tu script</li>
+              <li>Subir tus cambios a tú fork y hacer un Pull Request</li>
+            </ol>
+          </section>
+
+          <section>
+            <h2>Testing</h2>
+            <p>Lamentablemente las pruebas de hubot-scripts están rotas en este momento.</a>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Ejercicio</h2>
+            <p>Por que sí solo hablaramos esto sería muy aburrido. La meta, hacer que hubot nos proporcione información sobre los últimos terremotos registrados, usando solo lo que hemos visto.</p>
+          </section>
+
+          <section>
+            <h2>Recursos</h2>
+            <p>Este script no debe tener ninguna dependencía externa y como único recurso solo deberá usar <a href="http://earthquake.usgs.gov">http://earthquake.usgs.gov/</a></p>
+          </section>
+
+          <section>
+            <h2>Comportamiento deseado</h2>
+            <pre><code>
+hubot quakes (intensity|all|significant) (period) [limit]
+            </code></pre>
+            </section>
+
+          <section>
+            <h2>Solución propuesta</h2>
+            <i><small>- ver solución <a href="https://gist.github.com/3495368" target="_blank">aquí</a>.</small></i>
+          </section>
+        </section>
+
+        <section>
+          <h2>El futuro prometedor</h2>
+          <p>No hemos cubierto todo lo que hubot puede hacer</p>
+          <pre><code>
+robot.brain
+          </code></pre>
+          <small><i>- hubot puede usar redis como key-value storage y guardar información por nosotros</i></small>
+        </section>
+
+        <section>
+          <h2>Links</h2>
+          <ul>
+            <li><a href="https://github.com/github/hubot-scripts">hubot-scripts</a></li>
+            <li><a href="https://github.com/github/hubot">hubot</a></li>
+            <li><a href="https://github.com/github/hubot/wiki">hubot wiki</a></li>
+            <li><a href="http://nodejs.org/">node.js</a></li>
+            <li><a href="https://npmjs.org/">npm</a></li>
+            <li><a href="https://gist.github.com/3495368">Solución al ejercicio</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>El fin</h2>
+          <p>Está presentación fue hecha con: <a href="https://github.com/hakimel/reveal.js">reveal.js</a></p>
+          <p>Puede ser obtenida <a href="https://github.com/EnriqueVidal/hubot-talk">aquí</a></p>
+        </section>
+
+      </div>
+
+      <!-- The navigational controls UI -->
+      <aside class="controls">
+        <a class="left" href="#">&#x25C4;</a>
+        <a class="right" href="#">&#x25BA;</a>
+        <a class="up" href="#">&#x25B2;</a>
+        <a class="down" href="#">&#x25BC;</a>
+      </aside>
+
+      <!-- Presentation progress bar -->
+      <div class="progress"><span></span></div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/linear(2d)
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'socket.io/socket.io.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+          { src: 'plugin/speakernotes/client.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+        ]
+      });
+    </script>
+  </body>
+</html>
